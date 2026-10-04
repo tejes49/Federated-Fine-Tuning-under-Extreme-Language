@@ -1,0 +1,6 @@
+# FedAvg on LoRA adapters, no clustering (paper Sec. XVI baseline)
+extends: base.yaml
+method: fedavg_lora
+clustering: false
+global_adapter: false
+tokenizer_alignment: false

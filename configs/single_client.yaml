@@ -1,0 +1,26 @@
+# Single-client LoRA training (milestone 1). Nothing here is a result.
+extends: base.yaml
+model:
+  # Default: BLOOM-560m. Its pretraining corpus (ROOTS) is documented to include Hindi, Tamil,
+  # Telugu, Malayalam and English. NOT VERIFIED IN THIS REPO YET: needs a download on a machine
+  # with Hugging Face access (Colab). Use "tiny-offline" for a no-download pipeline check.
+  name: bigscience/bloom-560m
+  max_seq_len: 128
+  lora_target_modules: null   # null = auto-pick by architecture (see models/lora.py)
+data:
+  clients_dir: data/clients
+  data_config: configs/data.yaml   # used only to map language names ("tamil") to client ids ("ta")
+  max_train_samples: 200
+  max_validation_samples: 100
+train:
+  batch_size: 4
+  grad_accum_steps: 2
+  learning_rate: 2.0e-4
+  weight_decay: 0.0
+  max_grad_norm: 1.0
+  epochs: 1
+  max_steps: null             # if set, overrides epochs
+  eval_every_steps: null      # null = evaluate only at the end
+output:
+  results_dir: results/single_client
+  checkpoints_dir: checkpoints/single_client

@@ -1,0 +1,19 @@
+extends: base.yaml
+# Public source: Wikipedia dump via Hugging Face "wikimedia/wikipedia" (streamed, never fully downloaded).
+# Resource level is SIMULATED by how many training passages each client gets.
+dataset:
+  source: wikimedia/wikipedia
+  dump: "20231101"
+  min_chars: 200          # drop very short paragraphs
+  max_chars: 1000         # chunk longer paragraphs
+  max_articles: 30000     # safety cap on articles scanned per language
+  test_pct: 10            # % of articles reserved for test
+  val_pct: 10             # % of articles reserved for validation
+  n_val: 100              # passages per language (equal across languages)
+  n_test: 200
+clients:
+  - {id: en, lang: en, resource: high,   script: LATIN,      n_train: 2000}
+  - {id: hi, lang: hi, resource: medium, script: DEVANAGARI, n_train: 500}
+  - {id: ta, lang: ta, resource: medium, script: TAMIL,      n_train: 500}
+  - {id: te, lang: te, resource: low,    script: TELUGU,     n_train: 100}
+  - {id: ml, lang: ml, resource: low,    script: MALAYALAM,  n_train: 100}

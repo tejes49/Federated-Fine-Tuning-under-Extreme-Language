@@ -1,0 +1,14 @@
+# Development config: tiny randomly-initialised model built locally (NO download), few steps.
+# Verifies the pipeline only. Perplexity from this config says NOTHING about multilingual quality.
+extends: single_client.yaml
+model:
+  name: tiny-offline
+  max_seq_len: 64
+data:
+  max_train_samples: 32
+  max_validation_samples: 16
+train:
+  batch_size: 4
+  grad_accum_steps: 1
+  max_steps: 30
+  learning_rate: 1.0e-3

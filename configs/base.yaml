@@ -1,0 +1,25 @@
+# Shared defaults. Values marked TUNABLE are hyperparameters the paper (Sec. XV)
+# says will be finalised when the full system is built. Nothing here is a result.
+seed: 42
+device: auto            # auto | cpu | cuda
+precision: auto         # auto | fp32 | bf16   (auto: bf16 on CUDA GPUs that support it, else fp32; fp16 not supported)
+paths:
+  raw: data/raw
+  processed: data/processed
+  clients: data/clients
+  results: results
+  checkpoints: checkpoints
+model:
+  name: null            # chosen in Phase 3 (small multilingual model)
+  max_seq_len: 128
+lora:                   # TUNABLE (Phase 4)
+  r: 8
+  alpha: 16
+  dropout: 0.05
+federation:             # TUNABLE (Phases 5-6)
+  num_rounds: 10
+  local_steps: 20
+  clients_per_round: null   # null = all
+  mixing_alpha: 0.5         # the paper's alpha in Eq. (2)
+dev:
+  max_examples_per_client: 200   # small subsets during development (Rule 6)

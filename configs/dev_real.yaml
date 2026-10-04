@@ -1,0 +1,20 @@
+# DEVELOPMENT run with the REAL multilingual model (inherits model.name from single_client.yaml)
+# but tiny settings, to check the full pipeline quickly on one machine. NOT a research configuration.
+# Needs: Hugging Face access to download the model, and prepared data in data/clients/<id>/.
+# If the model does not fit in memory, override it:  --model <smaller causal LM>  (LoRA targets are
+# auto-selected for gpt2/bloom/llama/qwen2/mistral/gemma/opt/gpt_neox; anything else needs
+# model.lora_target_modules).
+extends: single_client.yaml
+model:
+  max_seq_len: 64
+data:
+  max_train_samples: 32
+  max_validation_samples: 16
+train:
+  batch_size: 2
+  grad_accum_steps: 1
+  max_steps: 5
+  learning_rate: 2.0e-4
+output:
+  results_dir: results/dev_real
+  checkpoints_dir: checkpoints/dev_real

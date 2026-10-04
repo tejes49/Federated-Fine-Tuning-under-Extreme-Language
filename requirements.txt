@@ -1,0 +1,13 @@
+# Core (pin ranges known to work together; tighten after first successful run)
+torch>=2.2,<3
+transformers>=4.44,<5
+peft>=0.12,<1
+datasets>=2.20,<4
+accelerate>=0.33,<2
+scikit-learn>=1.3
+numpy>=1.26
+pandas>=2.0
+matplotlib>=3.8
+PyYAML>=6.0
+sentence-transformers>=3.0   # Phase 7 (multilingual sentence embeddings)
+pytest>=8.0

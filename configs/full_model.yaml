@@ -1,0 +1,6 @@
+# Full proposed framework (paper Sec. VI)
+extends: base.yaml
+method: full_framework
+clustering: true
+global_adapter: true
+tokenizer_alignment: true
