@@ -46,6 +46,29 @@ any real loss / perplexity value, any check of Hindi / Tamil / Telugu / Malayala
 FedAvg, federated client orchestration, client sampling, language clustering, sentence embeddings, cluster
 aggregation, global adapter, tokenizer alignment, communication experiments, final research evaluation.
 
+## Phase B: FedAvg + LoRA baseline (IMPLEMENTED; tested only on the tiny offline model with synthetic data)
+
+* `server/fedavg.py` - `aggregate_lora_adapters(client_adapters, weights=None)`: weighted FedAvg of LoRA state_dicts.
+* `experiments/run_fedavg.py` - multi-round orchestration over en/hi/ta/te/ml using the unchanged `train_client`;
+  writes `results/fedavg/metrics.json` and `checkpoints/fedavg/`.
+* Run: `python -m experiments.run_fedavg --config configs/fedavg.yaml` (needs `data/clients/<id>/`; use
+  `configs/fedavg_dev.yaml` for a no-download pipeline check). Any number in `metrics.json` is real only when produced by such a run.
+* NOT YET EXECUTED: any FedAvg run with the real multilingual model on real Wikipedia client data.
+
+## Phase C: proposed method (IMPLEMENTED; tested only on the tiny offline model with synthetic data)
+
+* `clustering/language_cluster.py` - language fingerprints (mean sentence embedding; LaBSE intended, offline hashing encoder for dev)
+  and clustering from declared language + family metadata + fingerprint cosine.
+* `models/tokenizer_align.py` - linear subword-embedding -> common-space projection (closed-form ridge); tokenizers untouched.
+  Diagnostic only: the shared-tokenizer LoRA training does not consume it.
+* `server/cluster_fedavg.py` - per-cluster FedAvg and `Delta_global = alpha*sum_c(N_c/N)*Delta_c + (1-alpha)*Delta_global_prev`
+  (applied to the LoRA tensors, which are the delta on the frozen base); cluster + global checkpoints.
+* `experiments/run_proposed.py` - orchestration; per-language PPL (cluster adapter and global adapter), fairness gap
+  (max PPL - min PPL), communication bytes -> `results/proposed/metrics.json`, checkpoints in `checkpoints/proposed/`.
+* Run: `python -m experiments.run_proposed --config configs/proposed.yaml` (dev: `configs/proposed_dev.yaml`).
+* NOT YET EXECUTED: LaBSE fingerprints, any run with the real multilingual model / real data. Clustering threshold,
+  family weight and alpha are uncalibrated defaults.
+
 ## Setup
 
     python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\activate

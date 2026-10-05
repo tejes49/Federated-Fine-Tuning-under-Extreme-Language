@@ -1,0 +1,14 @@
+# FedAvg over LoRA adapters, no clustering (Phase B baseline). Inherits model/data/train/lora from single_client.yaml.
+# train.max_steps is overridden per client by federation.local_steps. Nothing here is a result.
+extends: single_client.yaml
+method: fedavg_lora
+clustering: false
+global_adapter: false
+tokenizer_alignment: false
+federation:
+  num_rounds: 10
+  local_steps: 20
+  clients_per_round: null   # null = all five languages every round
+output:
+  fedavg_results_dir: results/fedavg
+  fedavg_checkpoints_dir: checkpoints/fedavg

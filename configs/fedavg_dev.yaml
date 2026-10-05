@@ -1,0 +1,13 @@
+# Pipeline check for FedAvg: tiny random-init model, no download. Says nothing about multilingual quality.
+extends: dev.yaml
+method: fedavg_lora
+clustering: false
+global_adapter: false
+tokenizer_alignment: false
+federation:
+  num_rounds: 3
+  local_steps: 5
+  clients_per_round: null
+output:
+  fedavg_results_dir: results/fedavg_dev
+  fedavg_checkpoints_dir: checkpoints/fedavg_dev

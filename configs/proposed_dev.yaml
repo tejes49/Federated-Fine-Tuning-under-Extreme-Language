@@ -1,0 +1,27 @@
+# Pipeline check for the proposed method: tiny random-init model + offline hashing encoder (no downloads).
+# Clusters/alignment from this config say NOTHING about real languages.
+extends: dev.yaml
+method: full_framework
+clustering: true
+global_adapter: true
+tokenizer_alignment: true
+federation:
+  num_rounds: 3
+  local_steps: 5
+  clients_per_round: null
+  mixing_alpha: 0.5
+  cluster_init: cluster
+language_clustering:
+  encoder: offline-hash
+  fingerprint_samples: 16
+  similarity_threshold: 0.5
+  family_weight: 0.5
+  n_clusters: null
+  center: true
+  families: null
+alignment:
+  enabled: true
+  ridge: 1.0e-1
+output:
+  proposed_results_dir: results/proposed_dev
+  proposed_checkpoints_dir: checkpoints/proposed_dev

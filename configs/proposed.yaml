@@ -1,0 +1,29 @@
+# Proposed method (Phase C): language clustering + per-cluster FedAvg + alpha-mixed global adapter + tokenizer alignment.
+# Inherits model/data/train/lora from single_client.yaml; per-client steps come from federation.local_steps.
+# NOTHING HERE IS A RESULT. similarity_threshold / family_weight / mixing_alpha are uncalibrated defaults.
+extends: single_client.yaml
+method: full_framework
+clustering: true
+global_adapter: true
+tokenizer_alignment: true
+federation:
+  num_rounds: 10
+  local_steps: 20
+  clients_per_round: null     # null = all clients every round
+  mixing_alpha: 0.5           # alpha in Delta_global = alpha*sum_c(N_c/N)Delta_c + (1-alpha)*Delta_global_prev
+  cluster_init: cluster       # cluster = clients start from their cluster adapter; global = from the global adapter
+language_clustering:
+  # LaBSE covers hi/ta/te/ml. paraphrase-multilingual-MiniLM-L12-v2 does NOT list ta/te/ml.
+  encoder: sentence-transformers/LaBSE
+  fingerprint_samples: 100
+  similarity_threshold: 0.5
+  family_weight: 0.5          # weight of the declared-family match vs fingerprint cosine
+  n_clusters: null            # set to force a number of clusters (<= number of distinct languages)
+  center: true
+  families: null              # optional {lang: family} overrides of clustering/language_cluster.py LANG_FAMILY
+alignment:
+  enabled: true
+  ridge: 1.0e-2
+output:
+  proposed_results_dir: results/proposed
+  proposed_checkpoints_dir: checkpoints/proposed
